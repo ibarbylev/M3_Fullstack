@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+    Registration | Hop & Barley
+{% endblock %}
+
+{% block content %}
+
+<!-- Main Content -->
+<main class="auth-page-wrapper">
+    <div class="auth-background">
+        <img src="{% static 'img/background/pattern.jpg' %}" alt="Background pattern">
+    </div>
+    <div class="auth-form-container">
+        <div class="auth-container auth-container--register">
+            <div class="Legend">
+                <h1 class="auth-title">Register</h1>
+            </div>
+
+            <form class="auth-form" id="register-form" method="post" action="{% url 'auth_registration' %}">
+                {% csrf_token %}
+
+                    {% if form.non_field_errors %}
+                        <div class="error">
+                            {% for error in form.non_field_errors %}
+                                {{ error }}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+
+                {% for field in form %}
+                    <div class="InputField">
+                        {{ field.label_tag }}
+                        {{ field }}
+                        {% for error in field.errors %}
+                            <div class="error">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+
+                <div class="ButtonGroup">
+                    <button type="submit" class="button button--primary">Register</button>
+                </div>
+            </form>
+
+            <p class="auth-switch">Already have an account? <a href="{% url 'auth_login' %}">Sign in</a></p>
+
+            <p class="auth-switch">
+                <a href="{% url 'auth_email_resend_verification' %}">Запрос на повторное подтверждение регистрации</a>
+            </p>
+
+        </div>
+    </div>
+</main>
+
+{% endblock %}
